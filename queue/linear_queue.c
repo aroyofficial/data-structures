@@ -100,7 +100,7 @@ int main()
     {
         while (1)
         {
-            int choice, element, top;
+            int choice, element, front;
             printf("\n------------------------------");
             printf("\nPress 0 - Exit");
             printf("\nPress 1 - Enqueue");
@@ -123,10 +123,10 @@ int main()
                     dequeue(&queue);
                     break;
                 case 3:
-                    top = peek(&queue);
-                    if (top != -1)
+                    front = peek(&queue);
+                    if (front != -1)
                     {
-                        printf("Front element: %d", top);
+                        printf("Front element: %d", front);
                     }
                     break;
                 case 4:
