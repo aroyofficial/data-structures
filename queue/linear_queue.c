@@ -8,9 +8,19 @@ struct Queue {
     int size;
 } typedef Queue;
 
+int isFull(Queue *queue)
+{
+    return queue->rear == queue->size - 1;
+}
+
+int isEmpty(Queue *queue)
+{
+    return queue->front == -1 || queue->front == queue->rear + 1;
+}
+
 void enqueue(Queue *queue, int element)
 {
-    if (queue->rear == queue->size - 1)
+    if (isFull(queue))
     {
         printf("Queue is full!");
     }
@@ -28,7 +38,7 @@ void enqueue(Queue *queue, int element)
 
 void dequeue(Queue *queue)
 {
-    if (queue->front == -1 || queue->front == queue->rear + 1)
+    if (isEmpty(queue))
     {
         printf("Queue is empty!");
     }
@@ -41,7 +51,7 @@ void dequeue(Queue *queue)
 
 int peek(Queue *queue)
 {
-    if (queue->front == -1 || queue->front == queue->rear + 1)
+    if (isEmpty(queue))
     {
         printf("Queue is empty!");
         return -1;
@@ -54,7 +64,7 @@ int peek(Queue *queue)
 
 void display(Queue *queue)
 {
-    if (queue->front == -1 || queue->front == queue->rear + 1)
+    if (isEmpty(queue))
     {
         printf("Queue is empty!");
     }
