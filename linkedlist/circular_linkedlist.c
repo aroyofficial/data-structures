@@ -17,7 +17,7 @@ Node *createNode(int data)
 Node *getLastNode(Node *head)
 {
     Node *currentNode = head;
-    while (currentNode->next != NULL)
+    while (currentNode->next != head)
     {
         currentNode = currentNode->next;
     }
@@ -27,7 +27,7 @@ Node *getLastNode(Node *head)
 Node *getSecondLastNode(Node *head)
 {
     Node *currentNode = head;
-    while (currentNode->next->next != NULL)
+    while (currentNode->next->next != head)
     {
         currentNode = currentNode->next;
     }
@@ -39,12 +39,15 @@ void addFromStart(Node **head, int data)
     if (*head == NULL)
     {
         *head = createNode(data);
+        (*head)->next = *head;
     }
     else
     {
         Node *newNode = createNode(data);
         newNode->next = *head;
         *head = newNode;
+        Node *lastNode = getLastNode(*head);
+        lastNode->next = *head;
     }
 }
 
@@ -53,12 +56,15 @@ void addFromEnd(Node **head, int data)
     if (*head == NULL)
     {
         *head = createNode(data);
+        (*head)->next = *head;
     }
     else
     {
         Node *newNode = createNode(data);
         Node *lastNode = getLastNode(*head);
         lastNode->next = newNode;
+        lastNode = newNode;
+        lastNode->next = *head;
     }
 }
 
@@ -69,6 +75,12 @@ void deleteFromStart(Node **head)
         Node *secondNode = (*head)->next;
         free(*head);
         *head = secondNode;
+
+        if (*head != NULL)
+        {
+            Node *lastNode = getLastNode(*head);
+            lastNode->next = *head;
+        }
     }
 }
 
@@ -76,7 +88,7 @@ void deleteFromEnd(Node **head)
 {
     if (*head != NULL)
     {
-        if ((*head)->next == NULL)
+        if ((*head)->next == head)
         {
             free(*head);
             *head = NULL;
@@ -85,7 +97,7 @@ void deleteFromEnd(Node **head)
         {
             Node *secondLastNode = getSecondLastNode(*head);
             free(secondLastNode->next);
-            secondLastNode->next = NULL;
+            secondLastNode->next = *head;
         }
     }
 }
