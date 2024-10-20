@@ -1,6 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+enum Child {
+    NONE,
+    LEFT,
+    RIGHT
+} typedef Child;
+
 struct Node {
     int data;
     struct Node *left;
@@ -87,6 +93,136 @@ void add(Node **root, int data)
             }
         }
     }
+    
+    printf("Node added successfully...");
+}
+
+Node *search(Node *root, int data)
+{    
+    if (root == NULL)
+    {
+        return NULL;
+    }
+    else
+    {
+        if (data == root->data)
+        {
+            return root;
+        }
+        else if (data < root->data)
+        {
+            search(root->left, data);
+        }
+        else
+        {
+            search(root->right, data);
+        }
+    }
+}
+
+Node *getParent(Node *root, Node *child, Child *childName)
+{    
+    if (root == NULL)
+    {
+        return NULL;
+    }
+    else
+    {
+        if (child == root->left)
+        {
+            *childName = LEFT;
+            return root;
+        }
+        else if (child == root->right)
+        {
+            *childName = RIGHT;
+            return root;
+        }
+        else if (child->data < root->data)
+        {
+            return getParent(root->left, child, childName);
+        }
+        else
+        {
+            return getParent(root->right, child, childName);
+        }
+    }
+}
+
+int isLeafNode(Node *node)
+{
+    return node->right == NULL && node->left == NULL ? 1 : 0;
+}
+
+int hasSingleChild(Node *node)
+{
+    return node->right == NULL || node->left == NULL ? 1 : 0;
+}
+
+int haveBothChild(Node *node)
+{
+    return node->right != NULL && node->left != NULL ? 1 : 0;
+}
+
+Node *getInorderSuccessor(Node *node)
+{
+    Node *currentNode = node->right;
+    while (currentNode != NULL && currentNode->left != NULL)
+    {
+        currentNode = currentNode->left;
+    }
+    return currentNode;
+}
+
+void updateParent(Node *root, Node *nodeToDelete, Node *address)
+{
+    Child *childName = NONE;
+    Node *parentNode = getParent(root, nodeToDelete, &childName);
+            
+    if (childName == LEFT)
+    {
+        parentNode->left = address;
+    }
+    else if (childName == RIGHT)
+    {
+        parentNode->right = address;
+    }
+}
+
+void delete(Node **root, int data)
+{
+    Node *nodeToDelete = search(*root, data);
+    
+    if (nodeToDelete == NULL)
+    {
+        printf("No node found!");
+    }
+    else
+    {
+        if(nodeToDelete == *root && hasSingleChild(nodeToDelete))
+        {
+            Node *childNode = nodeToDelete->left == NULL ? nodeToDelete->right : nodeToDelete->left;
+            *root = childNode;
+        }
+        else if (isLeafNode(nodeToDelete))
+        {
+            updateParent(*root, nodeToDelete, NULL);
+        }
+        else if (hasSingleChild(nodeToDelete))
+        {
+            Node *childNode = nodeToDelete->left == NULL ? nodeToDelete->right : nodeToDelete->left;
+            updateParent(*root, nodeToDelete, childNode);
+        }
+        else if (haveBothChild(nodeToDelete))
+        {
+            Node *inorderSuccessor = getInorderSuccessor(nodeToDelete);
+            nodeToDelete->data = inorderSuccessor->data;
+            nodeToDelete = inorderSuccessor;
+            updateParent(*root, nodeToDelete, NULL);
+        }
+        free(nodeToDelete);
+        printf("Node deleted successfully...");
+    }
 }
 
 int main()
@@ -98,9 +234,10 @@ int main()
         printf("\n----------------------------------\n");
         printf("Press 0 for Exit\n");
         printf("Press 1 for Add\n");
-        printf("Press 2 for Inorder Traversal\n");
-        printf("Press 3 for Preorder Traversal\n");
-        printf("Press 4 for Postorder Traversal\n");
+        printf("Press 2 for Delete\n");
+        printf("Press 3 for Inorder Traversal\n");
+        printf("Press 4 for Preorder Traversal\n");
+        printf("Press 5 for Postorder Traversal\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
         
@@ -113,9 +250,13 @@ int main()
                 printf("Enter the data: ");
                 scanf("%d", &data);
                 add(&root, data);
-                printf("Node added successfully...");
                 break;
             case 2:
+                printf("Enter the node to delete: ");
+                scanf("%d", &data);
+                delete(&root, data);
+                break;
+            case 3:
                 if (root == NULL)
                 {
                     printf("No root node found!");
@@ -126,7 +267,7 @@ int main()
                     inorder(root);
                 }
                 break;
-            case 3:
+            case 4:
                 if (root == NULL)
                 {
                     printf("No root node found!");
@@ -137,7 +278,7 @@ int main()
                     preorder(root);
                 }
                 break;
-            case 4:
+            case 5:
                 if (root == NULL)
                 {
                     printf("No root node found!");
