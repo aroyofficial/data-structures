@@ -176,7 +176,7 @@ Node *getInorderSuccessor(Node *node)
 
 void updateParent(Node *root, Node *nodeToDelete, Node *address)
 {
-    Child *childName = NONE;
+    Child childName = NONE;
     Node *parentNode = getParent(root, nodeToDelete, &childName);
             
     if (childName == LEFT)

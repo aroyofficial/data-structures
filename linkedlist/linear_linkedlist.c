@@ -34,6 +34,16 @@ Node *getSecondLastNode(Node *head)
     return currentNode;
 }
 
+Node *getNode(Node **head, int data)
+{
+    Node *searchNode = *head;
+    while (searchNode != NULL && searchNode->data != data)
+    {
+        searchNode = searchNode->next;
+    }
+    return searchNode;
+}
+
 void addFromStart(Node **head, int data)
 {
     if (*head == NULL)
@@ -59,6 +69,43 @@ void addFromEnd(Node **head, int data)
         Node *newNode = createNode(data);
         Node *lastNode = getLastNode(*head);
         lastNode->next = newNode;
+    }
+}
+
+void addAfter(Node **head, int searchData, int data)
+{
+    Node *searchNode = getNode(head, searchData);    
+    if (searchNode != NULL)
+    {
+        Node *newNode = createNode(data);
+        newNode->next = searchNode->next;
+        searchNode->next = newNode;
+    }
+}
+
+void addBefore(Node **head, int searchData, int data)
+{
+    Node *searchNode = getNode(head, searchData); 
+
+    if (searchNode != NULL)
+    {
+        Node *newNode = createNode(data), *currentNode = *head;
+        
+        if (searchNode != *head)
+        {
+            while (currentNode->next != searchNode)
+            {
+                currentNode = currentNode->next;
+            }
+
+            currentNode->next = newNode;
+        }
+        else
+        {
+            *head = newNode;
+        }
+
+        newNode->next = searchNode;
     }
 }
 
@@ -123,14 +170,16 @@ int main()
 
     while (1)
     {
-        int choice, data;
+        int choice, data, target;
         printf("-----------------------------\n");
         printf("Press 0 - Exit\n");
         printf("Press 1 - Add from start\n");
         printf("Press 2 - Add from end\n");
-        printf("Press 3 - Delete from start\n");
-        printf("Press 4 - Delete from end\n");
-        printf("Press 5 - Display\n");
+        printf("Press 3 - Add after\n");
+        printf("Press 4 - Add before\n");
+        printf("Press 5 - Delete from start\n");
+        printf("Press 6 - Delete from end\n");
+        printf("Press 7 - Display\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
         
@@ -152,12 +201,26 @@ int main()
                 addFromEnd(&head, data);
                 break;
             case 3:
-                deleteFromStart(&head);
+                printf("Enter the node after which you want to add: ");
+                scanf("%d", &target);
+                printf("Enter the data: ");
+                scanf("%d", &data);
+                addAfter(&head, target, data);
                 break;
             case 4:
-                deleteFromEnd(&head);
+                printf("Enter the node before which you want to add: ");
+                scanf("%d", &target);
+                printf("Enter the data: ");
+                scanf("%d", &data);
+                addBefore(&head, target, data);
                 break;
             case 5:
+                deleteFromStart(&head);
+                break;
+            case 6:
+                deleteFromEnd(&head);
+                break;
+            case 7:
                 display(&head);
                 break;
             default:
