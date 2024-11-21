@@ -16,12 +16,13 @@ void enqueue(PriorityQueue *pq, Item item)
 {
     if (pq->rear == pq->size - 1)
     {
-        printf("Priority pq is full!");
+        printf("Priority Queue is full!\n");
     }
     else
     {
         pq->rear++;
         pq->data[pq->rear] = item;
+        printf("Element inserted successfully...\n");
     }
 }
 
@@ -45,7 +46,7 @@ void dequeue(PriorityQueue *pq)
 {
     if (pq->rear == -1)
     {
-        printf("Priority pq is empty!");
+        printf("Priority Queue is empty!\n");
     }
     else
     {
@@ -57,6 +58,7 @@ void dequeue(PriorityQueue *pq)
         }
 
         pq->rear--;
+        printf("Element removed successfully...\n");
     }
 }
 
@@ -64,7 +66,7 @@ int peek(PriorityQueue *pq)
 {
     if (pq->rear == -1)
     {
-        printf("Priority Queue is empty!");
+        printf("Priority Queue is empty!\n");
         return -1;
     }
     else
@@ -102,7 +104,7 @@ int main()
     {
         int choice, element;
         Item item;
-        printf("\n------------------------------");
+        printf("------------------------------");
         printf("\nPress 0 - Exit");
         printf("\nPress 1 - Enqueue");
         printf("\nPress 2 - Dequeue");
@@ -128,14 +130,14 @@ int main()
                 element = peek(&pq);
                 if (element != -1)
                 {
-                    printf("Peeked element: %d", element);
+                    printf("Peeked element: %d\n", element);
                 }
                 break;
             case 4:
                 display(&pq);
                 break;
             default:
-                printf("You've entered a wrong choice!");
+                printf("You've entered a wrong choice!\n");
         }
     }
 
