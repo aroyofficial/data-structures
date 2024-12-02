@@ -103,7 +103,7 @@ A comprehensive collection of data structure implementations in C programming la
             <td>Heap Sort</td>
         </tr>
         <tr>
-            <td rowspan="10" style="text-align:center;">Hashing</td>
+            <td rowspan="8" style="text-align:center;">Hashing</td>
             <td>Introduction</td>
         </tr>
         <tr>
