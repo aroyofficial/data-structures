@@ -168,6 +168,15 @@ void sort(Node **head) {
     }
 }
 
+void concat(Node **destList, Node *srcList)
+{
+    if (srcList != NULL && *destList != NULL)
+    {
+        Node *bridgeNode = getLastNode(*destList);
+        bridgeNode->next = srcList;
+    }
+}
+
 void sumIndividualNodes(Node **destList, Node *srcList)
 {
     Node *temp1 = *destList, *temp2 = srcList;
@@ -189,15 +198,6 @@ void sumIndividualNodes(Node **destList, Node *srcList)
     if (temp2 != NULL)
     {
         concat(destList, temp2);
-    }
-}
-
-void concat(Node **destList, Node *srcList)
-{
-    if (srcList != NULL && *destList != NULL)
-    {
-        Node *bridgeNode = getLastNode(*destList);
-        bridgeNode->next = srcList;
     }
 }
 
@@ -234,7 +234,8 @@ void menu(Node **linkedList1, Node **linkedList2, int select)
     printf("Press 6 - Delete from end\n");
     printf("Press 7 - Sort\n");
     printf("Press 8 - Concat\n");
-    printf("Press 9 - Display\n");
+    printf("Press 9 - Add Individual Nodes\n");
+    printf("Press 10 - Display\n");
     printf("Enter your choice: ");
     scanf("%d", &choice);
     
@@ -277,6 +278,9 @@ void menu(Node **linkedList1, Node **linkedList2, int select)
             concat(selectedList, secondaryList);
             break;
         case 9:
+            sumIndividualNodes(selectedList, secondaryList);
+            break;
+        case 10:
             display(selectedList);
             break;
         default:
